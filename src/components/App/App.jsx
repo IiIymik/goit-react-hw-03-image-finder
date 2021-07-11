@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Container } from './App.styled.js';
 import Searchbar from 'components/Searchbar/Searchbar';
 import {fetchImages} from 'services/api.js';
+import ImageGallery from 'components/ImageGallery/ImageGallery';
+import Button from 'components/Button/Button';
 
 export class App extends Component {
   state = {
@@ -23,17 +25,24 @@ export class App extends Component {
       console.log(error)
    }
     }
-
   }
 
   handleSubmit = searchingImages => {
     this.setState({ searchingImages });
   }
 
+  handleLoadMore = () => {
+    this.setState(prevState => ({
+      pageNum: prevState.pageNum + 1,
+    }))
+  }
+
   render() {
     return (
       <Container>
-        <Searchbar onSubmit={this.handleSubmit}/>
+        <Searchbar onSubmit={this.handleSubmit} />
+        <ImageGallery images={this.state.images} />
+        <Button onClick={this.handleLoadMore}/>
       </Container>
     )
   }
