@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from './App.styled.js';
+import { Container, LargeImg, SpinLoad} from './App.styled.js';
 import Searchbar from 'components/Searchbar/Searchbar';
 import {fetchImages} from 'services/api.js';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
@@ -14,7 +14,7 @@ export class App extends Component {
     images: [],
     reqStatus: 'idle',
     showModal: false,
-    // idle pending resolved rejected
+    largeImg: '',
   };
   async componentDidUpdate(_,prevState) {
     const { searchingImages, pageNum } = this.state;
@@ -44,19 +44,31 @@ export class App extends Component {
     }))
   }
 
-  handleOnImage = ({images}) => {
-console.log(images)
+  handleOnImage = (url) => {
+    const { images } = this.state;
+    images.map( img  => {
+      if (img.webformatURL.includes(url)) {
+        this.setState({largeImg: img.largeImageURL})
+      }
+    })
+      this.toggleShowModal();
+  }
+
+  toggleShowModal = () => {
+    this.setState(({ showModal}) => ({
+      showModal: !showModal,
+    }))
   }
 
   render() {
-    const { reqStatus, showModal, images } = this.state;
+    const { reqStatus, showModal, largeImg} = this.state;
     return (
       <Container>
         <Searchbar onSubmit={this.handleSubmit} />
-        {reqStatus === 'pending' && <SpinLoader/>}
-        <ImageGallery images={this.state.images} />
-        {showModal && <Modal>Hello</Modal>}
-        {reqStatus === 'resolved' && <Button onClick={this.handleLoadMore}/>}
+        <ImageGallery images={this.state.images} onClick={this.handleOnImage} />
+        {reqStatus === 'pending' && <SpinLoad><SpinLoader/></SpinLoad>}
+        {reqStatus === 'resolved' && <SpinLoad> <Button onClick={this.handleLoadMore}/></SpinLoad>}
+        {showModal && <Modal onClose={this.toggleShowModal}><LargeImg src={largeImg} /></Modal>}
       </Container>
     )
   }

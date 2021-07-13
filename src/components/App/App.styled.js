@@ -6,3 +6,13 @@ export const Container = css.div`
   grid-gap: 16px;
   padding-bottom: 24px;
 `;
+
+export const LargeImg = css.img`
+width:1200px;
+height: 800px;
+`;
+
+export const SpinLoad = css.div`
+display:flex;
+justify-content: center;
+`;

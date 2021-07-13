@@ -7,7 +7,7 @@ function Button({onClick}) {
   top: document.documentElement.scrollHeight,
   behavior: 'smooth',
 });
-    onClick()
+    onClick();
   };
 
   return (

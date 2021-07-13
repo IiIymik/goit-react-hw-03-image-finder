@@ -4,7 +4,8 @@ import React from 'react'
 
 function SpinLoader() {
   return (
-<Loader type="Grid" color="#3f51b5" height={80} width={80}/>
+       <Loader type="Bars" color="#3f51b5" height={80} width={80} />
+
   )
 }
 
